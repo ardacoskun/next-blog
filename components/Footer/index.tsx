@@ -1,7 +1,35 @@
 import Link from "next/link";
 import siteConfig from "@/config/site";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
-import SocialLink from "../Elements";
+import SocialLink from "@/components/Elements";
+
+const socialLinks = [
+  {
+    id: 1,
+    platform: "twitter",
+    link: siteConfig.socialLinks.twitter,
+  },
+  {
+    id: 2,
+    platform: "instagram",
+    link: siteConfig.socialLinks.instagram,
+  },
+  {
+    id: 1,
+    platform: "github",
+    link: siteConfig.socialLinks.github,
+  },
+  {
+    id: 1,
+    platform: "youtube",
+    link: siteConfig.socialLinks.youtube,
+  },
+  {
+    id: 1,
+    platform: "linkedin",
+    link: siteConfig.socialLinks.linkedin,
+  },
+];
 
 const Footer = () => {
   return (
@@ -19,26 +47,13 @@ const Footer = () => {
           <div>
             <div className="font-medium text-lg">#exploretheworld</div>
             <div className="flex items-center gap-3 text-neutral-600 mt-2">
-              <SocialLink
-                platform="twitter"
-                link={siteConfig.socialLinks.twitter}
-              />
-              <SocialLink
-                platform="instagram"
-                link={siteConfig.socialLinks.instagram}
-              />
-              <SocialLink
-                platform="github"
-                link={siteConfig.socialLinks.github}
-              />
-              <SocialLink
-                platform="youtube"
-                link={siteConfig.socialLinks.youtube}
-              />
-              <SocialLink
-                platform="linkedin"
-                link={siteConfig.socialLinks.linkedin}
-              />
+              {socialLinks.map((item) => (
+                <SocialLink
+                  key={item.id}
+                  platform={item.platform}
+                  link={item.link}
+                />
+              ))}
             </div>
           </div>
           <div>
