@@ -19,7 +19,7 @@ const siteConfig: SiteConfig = {
   socialLinks: {
     twitter: "https://twitter.com/",
     youtube: "https://www.youtube.com/",
-    github: "https://github.com/",
+    github: "https://github.com/ardacoskun",
     linkedin: "https://www.linkedin.com",
     instagram: "https://instagram.com/",
   },
