@@ -1,7 +1,7 @@
 import Link from "next/link";
 import siteConfig from "@/config/site";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
-import SocialLink from "@/components/Elements";
+import SocialLink from "@/components/Elements/SocialLink";
 
 const socialLinks = [
   {
