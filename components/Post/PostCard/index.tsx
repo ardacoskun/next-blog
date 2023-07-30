@@ -17,9 +17,9 @@ const PostCard = ({
   return (
     <Link
       href={`/post/${post.slug}`}
-      className={`${
+      className={`@container ${
         layout === "horizontal"
-          ? "grid grid-cols-2 gap-10 items-center"
+          ? "grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
           : "space-y-10"
       } `}
     >
@@ -29,7 +29,7 @@ const PostCard = ({
         width={600}
         height={300}
         className={`rounded-md w-full object-cover object-center max-h-[300px] ${
-          reverse ? "order-last" : ""
+          reverse ? "md:order-last" : ""
         }`}
       />
       <PostContent post={post} />
