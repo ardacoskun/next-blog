@@ -1,7 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { POST } from "@/types/collection";
 import { getReadingTime, getRelativeDate } from "@/lib/helpers";
-
 interface PostContentProps {
   post: POST;
 }
@@ -30,7 +29,7 @@ const PostContent = ({ post }: PostContentProps) => {
         <h2 className="font-medium text-3xl">{post.title}</h2>
         <p className="text-neutral-600 leading-snug">{post.description}</p>
         <div className="flex items-center gap-2 pt-3">
-          Read More <ArrowRight size="14" />
+          Read More <ArrowUpRight size="14" />
         </div>
       </div>
     </div>

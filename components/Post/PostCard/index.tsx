@@ -6,9 +6,14 @@ import PostContent from "../PostContent";
 interface PostProps {
   post: POST;
   layout?: "vertical" | "horizontal";
+  reverse?: boolean;
 }
 
-const PostCard = ({ post, layout = "horizontal" }: PostProps) => {
+const PostCard = ({
+  post,
+  layout = "horizontal",
+  reverse = false,
+}: PostProps) => {
   return (
     <Link
       href={`/post/${post.slug}`}
@@ -23,7 +28,9 @@ const PostCard = ({ post, layout = "horizontal" }: PostProps) => {
         alt={post.title}
         width={600}
         height={300}
-        className="rounded-md w-full object-cover object-center max-h-[300px]"
+        className={`rounded-md w-full object-cover object-center max-h-[300px] ${
+          reverse ? "order-last" : ""
+        }`}
       />
       <PostContent post={post} />
     </Link>
