@@ -3,12 +3,17 @@ import { POST } from "@/types/collection";
 import { getReadingTime, getRelativeDate } from "@/lib/helpers";
 interface PostContentProps {
   post: POST;
+  isPostPage?: boolean;
 }
 
-const PostContent = ({ post }: PostContentProps) => {
+const PostContent = ({ post, isPostPage = false }: PostContentProps) => {
   return (
     <div className="space-y-2">
-      <div className="@md:text-sm text-xs flex gap-2 items-center text-neutral-400 ">
+      <div
+        className={`flex gap-2 items-center text-neutral-400 ${
+          isPostPage ? "text-sm" : "@md:text-sm text-xs"
+        }`}
+      >
         <div
           className={`font-medium ${
             post.category.title === "Cities"
@@ -26,15 +31,23 @@ const PostContent = ({ post }: PostContentProps) => {
         <div>{getRelativeDate(post.date_created)}</div>
       </div>
       <div>
-        <h2 className="font-medium @lg:text-3xl text-xl @md:text-2xl">
+        <h2
+          className={`${
+            isPostPage
+              ? "text-2xl md:text-3xl lg:text-4xl font-bold"
+              : "@lg:text-3xl text-xl @md:text-2xl font-medium "
+          } `}
+        >
           {post.title}
         </h2>
         <p className="text-neutral-600 leading-snug text-base @lg:text-lg">
           {post.description}
         </p>
-        <div className="flex items-center gap-2 pt-3">
-          Read More <ArrowUpRight size="14" />
-        </div>
+        {!isPostPage && (
+          <div className="flex items-center gap-2 pt-3">
+            Read More <ArrowUpRight size="14" />
+          </div>
+        )}
       </div>
     </div>
   );
