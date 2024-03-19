@@ -8,7 +8,17 @@ import {
   Youtube,
 } from "lucide-react";
 
-const SocialLink = ({ platform, link }: { platform: string; link: string }) => {
+interface SocialLinkProps {
+  platform: string;
+  link: string;
+  isShareUrl?: boolean;
+}
+
+const SocialLink = ({
+  platform,
+  link,
+  isShareUrl = false,
+}: SocialLinkProps) => {
   const getIcon = (platform: string) => {
     switch (platform) {
       case "facebook":
@@ -28,7 +38,15 @@ const SocialLink = ({ platform, link }: { platform: string; link: string }) => {
 
   return (
     <Link href={link} target="_blank">
-      {getIcon(platform)}
+      <div
+        className={`${
+          isShareUrl
+            ? "py-2 px-3 bg-neutral-200 rounded-md text-neutral-600 hover:bg-neutral-600 hover:text-neutral-100 duration-100 ease-in-out transition-colors"
+            : ""
+        }`}
+      >
+        {getIcon(platform)}
+      </div>
     </Link>
   );
 };
