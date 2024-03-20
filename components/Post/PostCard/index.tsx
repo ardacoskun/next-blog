@@ -28,7 +28,7 @@ const PostCard = ({
         alt={post.title}
         width={600}
         height={300}
-        className={`rounded-md w-full object-cover object-center max-h-[300px] ${
+        className={`rounded-md w-full object-cover object-center h-full max-h-[300px] ${
           reverse ? "md:order-last" : ""
         }`}
       />

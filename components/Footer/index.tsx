@@ -33,7 +33,7 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <div className="py-8 mt-10 border-t">
+    <div className="py-8 mt-20 border-t">
       <PaddingContainer>
         <div>
           <h2 className="text-3xl font-bold">
