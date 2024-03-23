@@ -7,8 +7,34 @@ import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
 
-const Page = ({ params }: { params: { slug: string } }) => {
-  const post = DUMMY_POSTS.find((post) => post.slug === params.slug);
+const getData = async (slug: string) => {
+  try {
+    const res = await directus.items("post").readByQuery({
+      filter: {
+        slug: {
+          _eq: slug,
+        },
+      },
+      fields: [
+        "*",
+        "category.id",
+        "category.title",
+        "author.id",
+        "author.first_name",
+        "author.last_name",
+      ],
+    });
+
+    return res?.data?.[0];
+  } catch (error) {
+    console.log("error", error);
+    throw new Error("Error fetching post!");
+  }
+};
+
+const Page = async ({ params }: { params: { slug: string } }) => {
+  const post = await getData(params.slug);
+  console.log("🚀 ~ Page ~ post:", post);
 
   if (!post) {
     notFound();

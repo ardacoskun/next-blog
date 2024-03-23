@@ -11,7 +11,7 @@ const PostHero = ({ post }: PostHeroProps) => {
     <div>
       <PostContent post={post} isPostPage />
       <Image
-        src={post.image}
+        src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`}
         width={1280}
         height={500}
         alt={post.title}
