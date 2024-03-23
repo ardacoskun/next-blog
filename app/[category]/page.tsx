@@ -69,9 +69,24 @@ const Page = async ({
 export default Page;
 
 export const generateStaticParams = async () => {
-  return DUMMY_CATEGORIES.map((category) => {
-    return {
-      category: category.slug,
-    };
-  });
+  try {
+    const categories = await directus.items("category").readByQuery({
+      filter: {
+        status: {
+          _eq: "published",
+        },
+      },
+      fields: ["slug"],
+    });
+
+    const params = categories?.data?.map((item) => {
+      return {
+        category: item.slug as string,
+      };
+    });
+
+    return params || [];
+  } catch (error) {
+    throw new Error("Error fetching category!");
+  }
 };
