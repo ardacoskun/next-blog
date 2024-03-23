@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { DUMMY_POSTS } from "@/DUMMY_DATA";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import PostHero from "@/components/Post/PostHero";
 import SocialLink from "@/components/Elements/SocialLink";
@@ -34,7 +33,6 @@ const getData = async (slug: string) => {
 
 const Page = async ({ params }: { params: { slug: string } }) => {
   const post = await getData(params.slug);
-  console.log("🚀 ~ Page ~ post:", post);
 
   if (!post) {
     notFound();
