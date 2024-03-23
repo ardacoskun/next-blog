@@ -5,6 +5,7 @@ import PostHero from "@/components/Post/PostHero";
 import SocialLink from "@/components/Elements/SocialLink";
 import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
+import directus from "@/lib/directus";
 
 const Page = ({ params }: { params: { slug: string } }) => {
   const post = DUMMY_POSTS.find((post) => post.slug === params.slug);
@@ -34,26 +35,25 @@ const Page = ({ params }: { params: { slug: string } }) => {
   return (
     <PaddingContainer>
       <div className="space-y-10">
-      <PostHero post={post} />
-      <div className="flex flex-col gap-10 md:flex-row">
-        <div className="relative">
-          <div className="sticky flex items-center gap-5 md:flex-col top-20">
-            <div className="font-medium md:hidden">Share this content:</div>
-            {socialLinks.map((item) => (
-              <SocialLink
-                isShareUrl
-                key={item.id}
-                platform={item.platform}
-                link={item.link}
-              />
-            ))}
+        <PostHero post={post} />
+        <div className="flex flex-col gap-10 md:flex-row">
+          <div className="relative">
+            <div className="sticky flex items-center gap-5 md:flex-col top-20">
+              <div className="font-medium md:hidden">Share this content:</div>
+              {socialLinks.map((item) => (
+                <SocialLink
+                  isShareUrl
+                  key={item.id}
+                  platform={item.platform}
+                  link={item.link}
+                />
+              ))}
+            </div>
           </div>
+          <PostBody body={post?.body} />
         </div>
-        <PostBody body={post?.body}/>
+        <CTACard />
       </div>
-      <CTACard />
-      </div>
-
     </PaddingContainer>
   );
 };
@@ -61,9 +61,24 @@ const Page = ({ params }: { params: { slug: string } }) => {
 export default Page;
 
 export const generateStaticParams = async () => {
-  return DUMMY_POSTS.map((post) => {
-    return {
-      slug: post.slug,
-    };
-  });
+  try {
+    const res = await directus.items("post").readByQuery({
+      filter: {
+        status: {
+          _eq: "published",
+        },
+      },
+      fields: ["slug"],
+    });
+
+    const params = res?.data?.map((item) => {
+      return {
+        slug: item.slug as string,
+      };
+    });
+
+    return params || [];
+  } catch (error) {
+    throw new Error("Error fetching post!");
+  }
 };
