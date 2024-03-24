@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import directus from "@/lib/directus";
 import Image from "next/image";
+import { revalidateTag } from "next/cache";
+import directus from "@/lib/directus";
 
 const CTACard = async () => {
   const formAction = async (formData: FormData) => {
@@ -10,11 +11,24 @@ const CTACard = async () => {
       await directus.items("subscribers").createOne({
         email,
       });
+      revalidateTag("subscribers-count");
     } catch (error) {
       console.log("error");
       throw new Error("Error create subscriber!");
     }
   };
+
+  const subscribersCount = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/items/subscribers?meta=total_count&access_token=${process.env.ADMIN_TOKEN}`,
+    {
+      next: {
+        tags: ["subscribers-count"],
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((res) => res.meta.total_count)
+    .catch((error) => console.log(error));
 
   return (
     <div className="relative px-6 py-10 overflow-hidden rounded-md bg-slate-100">
@@ -36,6 +50,7 @@ const CTACard = async () => {
           me!
         </p>
         <form
+          key={subscribersCount + "subscribers-form"}
           action={formAction}
           className="flex items-center w-full gap-2 mt-6"
         >
@@ -49,6 +64,14 @@ const CTACard = async () => {
             Sign Up
           </button>
         </form>
+
+        <div className="mt-5 text-neutral-700">
+          Join our{" "}
+          <span className="px-2 py-1 text-sm rounded-md bg-neutral-700 text-neutral-100">
+            {subscribersCount}
+          </span>{" "}
+          subscribers now!
+        </div>
       </div>
     </div>
   );
