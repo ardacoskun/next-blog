@@ -25,7 +25,13 @@ const getData = async () => {
   }
 };
 
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: {
+    lang: string;
+  };
+}) {
   const posts = await getData();
 
   if (!posts) {
