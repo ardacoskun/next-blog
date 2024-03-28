@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navigation locale={lang} />
         <div className="pt-10 min-h-[calc(100vh-300px)]">{children}</div>
-        <Footer />
+        <Footer locale={lang} />
       </body>
     </html>
   );

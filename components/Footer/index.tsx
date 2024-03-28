@@ -2,6 +2,7 @@ import Link from "next/link";
 import siteConfig from "@/config/site";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import SocialLink from "@/components/Elements/SocialLink";
+import { getDictionary } from "@/lib/getDictionary";
 
 const socialLinks = [
   {
@@ -31,7 +32,9 @@ const socialLinks = [
   },
 ];
 
-const Footer = () => {
+const Footer = async ({ locale }: { locale: string }) => {
+  const dictionary = await getDictionary(locale);
+
   return (
     <div className="py-8 mt-20 border-t">
       <PaddingContainer>
@@ -40,7 +43,7 @@ const Footer = () => {
             <Link href="/">{siteConfig.siteName}</Link>
           </h2>
           <p className="max-w-md mt-2 text-neutral-700">
-            {siteConfig.description}
+            {dictionary.footer.description}
           </p>
         </div>
         <div className="flex flex-wrap justify-between gap-4 mt-6">
@@ -57,7 +60,9 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <div className="text-sm text-neutral-400">Currently At</div>
+            <div className="text-sm text-neutral-400">
+              {dictionary.footer.currentlyAtText}
+            </div>
             <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-md">
               <div className="w-2 h-2 bg-emerald-400" />
               {siteConfig.currentlyAt}
@@ -66,10 +71,10 @@ const Footer = () => {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 py-3 mt-16 border-t">
           <div className="text-sm text-neutral-400">
-            All rights are reserved | Copyright {new Date().getFullYear()}
+            {dictionary.footer.rightsText} {new Date().getFullYear()}
           </div>
           <div className="text-sm">
-            Made with love by{" "}
+            {dictionary.footer.creatorText}{" "}
             <Link
               href={siteConfig.socialLinks.github}
               target="_blank"
