@@ -26,7 +26,7 @@ const getData = async () => {
 };
 
 export default async function Home({
-  params,
+  params: { lang },
 }: {
   params: {
     lang: string;
@@ -43,7 +43,7 @@ export default async function Home({
       <main className="h-auto space-y-10">
         <PostCard post={posts[0]} />
         <PostList posts={posts.slice(1, 3)} />
-        <CTACard />
+        <CTACard locale={lang} />
         <PostCard post={posts[3]} reverse />
         <PostList posts={posts.slice(4, 6)} />
       </main>
