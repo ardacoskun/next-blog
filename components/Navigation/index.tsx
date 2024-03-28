@@ -1,7 +1,10 @@
 import Link from "next/link";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
+import { getDictionary } from "@/lib/getDictionary";
 
-const Navigation = () => {
+const Navigation = async ({ locale }: { locale: string }) => {
+  const dictionary = await getDictionary(locale);
+
   return (
     <div className="border-b sticky top-0 left-0 right-0 bg-white bg-opacity-50 backdrop-blur-md z-[999]">
       <PaddingContainer>
@@ -12,10 +15,14 @@ const Navigation = () => {
           <nav>
             <ul className="flex items-center gap-4 text-neutral-600 ">
               <li>
-                <Link href="/cities">Cities</Link>
+                <Link href={`/${locale}/cities`}>
+                  {dictionary.navigation.links.cities}
+                </Link>
               </li>
               <li>
-                <Link href="/experiences">Experiences</Link>
+                <Link href={`/${locale}/experiences`}>
+                  {dictionary.navigation.links.experience}
+                </Link>
               </li>
             </ul>
           </nav>
