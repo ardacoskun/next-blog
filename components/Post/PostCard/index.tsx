@@ -19,7 +19,7 @@ const PostCard = ({
 }: PostProps) => {
   return (
     <Link
-      href={`/post/${post.slug}`}
+      href={`/${locale}/post/${post.slug}`}
       className={`@container ${
         layout === "horizontal"
           ? "grid grid-cols-1 md:grid-cols-2 gap-10 items-center"

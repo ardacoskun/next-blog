@@ -4,12 +4,13 @@ import Image from "next/image";
 
 interface PostHeroProps {
   post: POST;
+  locale: string;
 }
 
-const PostHero = ({ post }: PostHeroProps) => {
+const PostHero = ({ post, locale }: PostHeroProps) => {
   return (
     <div>
-      <PostContent post={post} isPostPage />
+      <PostContent post={post} locale={locale} isPostPage />
       <Image
         src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`}
         width={1280}

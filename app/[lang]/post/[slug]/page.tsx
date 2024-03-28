@@ -31,7 +31,7 @@ const getData = async (slug: string) => {
   }
 };
 
-const Page = async ({ params }: { params: { slug: string } }) => {
+const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const post = await getData(params.slug);
 
   if (!post) {
@@ -59,7 +59,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   return (
     <PaddingContainer>
       <div className="space-y-10">
-        <PostHero post={post} />
+        <PostHero post={post} locale={params.lang} />
         <div className="flex flex-col gap-10 md:flex-row">
           <div className="relative">
             <div className="sticky flex items-center gap-5 md:flex-col top-20">
@@ -76,7 +76,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
           </div>
           <PostBody body={post?.body} />
         </div>
-        <CTACard />
+        <CTACard locale={params.lang} />
       </div>
     </PaddingContainer>
   );

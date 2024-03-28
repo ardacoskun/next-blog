@@ -35,6 +35,7 @@ const Page = async ({
 }: {
   params: {
     category: string;
+    lang: string;
   };
 }) => {
   const category = await getData(params.category);
@@ -61,7 +62,7 @@ const Page = async ({
           {typeCorrectedCategory?.description}
         </p>
       </div>
-      <PostList posts={typeCorrectedCategory?.posts} />
+      <PostList posts={typeCorrectedCategory?.posts} locale={params.lang} />
     </PaddingContainer>
   );
 };
