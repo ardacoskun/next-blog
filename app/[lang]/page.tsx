@@ -41,11 +41,11 @@ export default async function Home({
   return (
     <PaddingContainer>
       <main className="h-auto space-y-10">
-        <PostCard post={posts[0]} />
-        <PostList posts={posts.slice(1, 3)} />
+        <PostCard post={posts[0]} locale={lang} />
+        <PostList posts={posts.slice(1, 3)} locale={lang} />
         <CTACard locale={lang} />
-        <PostCard post={posts[3]} reverse />
-        <PostList posts={posts.slice(4, 6)} />
+        <PostCard post={posts[3]} reverse locale={lang} />
+        <PostList posts={posts.slice(4, 6)} locale={lang} />
       </main>
     </PaddingContainer>
   );

@@ -2,17 +2,20 @@ import { POST } from "@/types/collection";
 import Image from "next/image";
 import Link from "next/link";
 import PostContent from "../PostContent";
+import { getDictionary } from "@/lib/getDictionary";
 
 interface PostProps {
   post: POST;
   layout?: "vertical" | "horizontal";
   reverse?: boolean;
+  locale: string;
 }
 
 const PostCard = ({
   post,
   layout = "horizontal",
   reverse = false,
+  locale,
 }: PostProps) => {
   return (
     <Link
@@ -32,7 +35,7 @@ const PostCard = ({
           reverse ? "md:order-last" : ""
         }`}
       />
-      <PostContent post={post} />
+      <PostContent post={post} locale={locale} />
     </Link>
   );
 };

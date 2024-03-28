@@ -4,13 +4,14 @@ import PostCard from "../PostCard";
 interface PostListProps {
   posts: POST[];
   layout?: "vertical" | "horizontal";
+  locale: string;
 }
 
-const PostList = ({ posts, layout = "vertical" }: PostListProps) => {
+const PostList = ({ posts, layout = "vertical", locale }: PostListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:grid-flow-col lg:auto-cols-fr">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-flow-col lg:auto-cols-fr">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} layout={layout} />
+        <PostCard key={post.id} post={post} layout={layout} locale={locale} />
       ))}
     </div>
   );
