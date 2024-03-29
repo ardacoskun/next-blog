@@ -56,6 +56,8 @@ const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
     },
   ];
 
+  console.log("params.lang", params.lang);
+
   return (
     <PaddingContainer>
       <div className="space-y-10">

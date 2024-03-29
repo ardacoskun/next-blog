@@ -5,7 +5,7 @@ import PostCard from "@/components/Post/PostCard";
 import PostList from "@/components/Post/PostList";
 import directus from "@/lib/directus";
 
-const getData = async () => {
+const getData = async (locale: string) => {
   try {
     const res = await directus.items("post").readByQuery({
       fields: [
@@ -15,10 +15,29 @@ const getData = async () => {
         "author.last_name",
         "category.id",
         "category.title",
+        "category.translations.*",
+        "translations.*",
       ],
     });
 
-    return res.data;
+    if (locale === "en") {
+      return res.data;
+    }
+
+    const localisedRes = res.data?.map((item) => {
+      return {
+        ...item,
+        title: item.translations[0].title,
+        description: item.translations[0].description,
+        body: item.translations[0].body,
+        category: {
+          ...item.category,
+          title: item.category.translations[0].title,
+        },
+      };
+    });
+
+    return localisedRes;
   } catch (error) {
     console.log("error");
     throw new Error("Error fetching posts!");
@@ -32,7 +51,7 @@ export default async function Home({
     lang: string;
   };
 }) {
-  const posts = await getData();
+  const posts = await getData(lang);
 
   if (!posts) {
     return notFound();

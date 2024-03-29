@@ -2,7 +2,6 @@ import { POST } from "@/types/collection";
 import Image from "next/image";
 import Link from "next/link";
 import PostContent from "../PostContent";
-import { getDictionary } from "@/lib/getDictionary";
 
 interface PostProps {
   post: POST;
