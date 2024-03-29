@@ -5,7 +5,7 @@ import PostList from "@/components/Post/PostList";
 import directus from "@/lib/directus";
 import { POST } from "@/types/collection";
 
-const getData = async (category: string) => {
+const getData = async (category: string, locale: string) => {
   try {
     const res = await directus.items("category").readByQuery({
       filter: {
@@ -15,15 +15,41 @@ const getData = async (category: string) => {
       },
       fields: [
         "*",
+        "translations.*",
         "posts.*",
         "posts.author.id",
         "posts.author.first_name",
         "posts.author.last_name",
         "posts.author.title",
+        "posts.translations.*",
       ],
     });
 
-    return res?.data?.[0];
+    if (locale === "en") {
+      return res?.data?.[0];
+    }
+
+    const fetchedCategory: any = res?.data?.[0];
+
+    const localisedRes = {
+      ...fetchedCategory,
+      title: fetchedCategory?.translations[0].title,
+      description: fetchedCategory?.translations[0].description,
+      posts: fetchedCategory?.posts.map((item: any) => {
+        return {
+          ...item,
+          title: item?.translations[0].title,
+          description: item?.translations[0].description,
+          body: item?.translations[0].body,
+          category: {
+            ...item.category,
+            title: fetchedCategory?.translations[0].title,
+          },
+        };
+      }),
+    };
+
+    return localisedRes;
   } catch (error) {
     console.log("error", error);
     throw new Error("Error fetching category!");
@@ -38,7 +64,7 @@ const Page = async ({
     lang: string;
   };
 }) => {
-  const category = await getData(params.category);
+  const category = await getData(params.category, params.lang);
 
   if (!category) {
     return notFound();
@@ -80,13 +106,21 @@ export const generateStaticParams = async () => {
       fields: ["slug"],
     });
 
-    const params = categories?.data?.map((item) => {
-      return {
-        category: item.slug as string,
-      };
-    });
+    const mapCategoryParams = (lang: string) => {
+      return categories?.data?.map((item) => {
+        return {
+          category: item.slug as string,
+          lang: lang,
+        };
+      });
+    };
 
-    return params || [];
+    const params = mapCategoryParams("en");
+    const localisedParams = mapCategoryParams("de");
+
+    const allParams = params?.concat(localisedParams ?? []);
+
+    return allParams || [];
   } catch (error) {
     throw new Error("Error fetching category!");
   }
