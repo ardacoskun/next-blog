@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import PostHero from "@/components/Post/PostHero";
@@ -6,7 +7,7 @@ import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
 
-const getData = async (slug: string, locale: string) => {
+const getData = cache(async (slug: string, locale: string) => {
   try {
     const res = await directus.items("post").readByQuery({
       filter: {
@@ -48,6 +49,21 @@ const getData = async (slug: string, locale: string) => {
     console.log("error", error);
     throw new Error("Error fetching post!");
   }
+});
+
+export const generateMetadata = async ({
+  params: { slug, lang },
+}: {
+  params: { slug: string; lang: string };
+}) => {
+  const data = await getData(slug, lang);
+
+  return {
+    title: {
+      absolute: data?.title,
+    },
+    description: data?.description,
+  };
 };
 
 const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
