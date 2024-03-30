@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/server";
 import { getReadingTime, getRelativeDate } from "@/lib/helpers";
-import { getData } from "./page";
+import { getData } from "@/services/post";
 
 export const size = {
   width: 1200,

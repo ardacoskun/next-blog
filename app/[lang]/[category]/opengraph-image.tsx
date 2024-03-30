@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { ImageResponse } from "next/server";
-import { getData } from "./page";
 import siteConfig from "@/config/site";
+import { getData } from "@/services/category";
 
 export const size = {
   width: 1200,

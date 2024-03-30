@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { notFound } from "next/navigation";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import PostHero from "@/components/Post/PostHero";
@@ -7,50 +6,7 @@ import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
 import siteConfig from "@/config/site";
-
-export const getData = cache(async (slug: string, locale: string) => {
-  try {
-    const res = await directus.items("post").readByQuery({
-      filter: {
-        slug: {
-          _eq: slug,
-        },
-      },
-      fields: [
-        "*",
-        "category.id",
-        "category.title",
-        "author.id",
-        "author.first_name",
-        "author.last_name",
-        "translations.*",
-        "category.translations.*",
-      ],
-    });
-
-    const postData = res?.data?.[0];
-
-    if (locale === "en") {
-      return postData;
-    }
-
-    const localisedRes = {
-      ...postData,
-      title: postData?.translations?.[0]?.title,
-      description: postData?.translations?.[0]?.description,
-      body: postData?.translations?.[0]?.body,
-      category: {
-        ...postData?.category,
-        title: postData?.category?.translations?.[0]?.title,
-      },
-    };
-
-    return localisedRes;
-  } catch (error) {
-    console.log("error", error);
-    throw new Error("Error fetching post!");
-  }
-});
+import { getData } from "@/services/post";
 
 export const generateMetadata = async ({
   params: { slug, lang },
