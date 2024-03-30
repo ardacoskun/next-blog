@@ -8,7 +8,7 @@ import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
 import siteConfig from "@/config/site";
 
-const getData = cache(async (slug: string, locale: string) => {
+export const getData = cache(async (slug: string, locale: string) => {
   try {
     const res = await directus.items("post").readByQuery({
       filter: {
@@ -69,13 +69,13 @@ export const generateMetadata = async ({
       description: data?.description,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/post/${slug}`,
       siteName: siteConfig.siteName,
-      images: [
-        {
-          url: "https://localhost:3000/opengraph-image.png",
-          width: 1200,
-          height: 628,
-        },
-      ],
+      // images: [
+      //   {
+      //     url: "https://localhost:3000/opengraph-image.png",
+      //     width: 1200,
+      //     height: 628,
+      //   },
+      // ],
       locale: lang,
       type: "website",
     },
