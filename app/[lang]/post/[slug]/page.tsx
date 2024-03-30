@@ -71,7 +71,7 @@ export const generateMetadata = async ({
       siteName: siteConfig.siteName,
       // images: [
       //   {
-      //     url: "https://localhost:3000/opengraph-image.png",
+      //     url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/post/${slug}/opengraph-image.png`,
       //     width: 1200,
       //     height: 628,
       //   },
@@ -97,7 +97,7 @@ const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    image: `${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`,
+    image: `${process.env.NEXT_PUBLIC_SITE_URL}/${params.lang}/post/${params.slug}/opengraph-image.png`,
     author: `${post.author.first_name} ${post.author.last_name}`,
     genre: post.category.title,
     publisher: siteConfig.siteName,

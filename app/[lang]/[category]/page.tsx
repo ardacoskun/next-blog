@@ -7,7 +7,7 @@ import { POST } from "@/types/collection";
 import siteConfig from "@/config/site";
 
 // category: string, locale: string değişmezse cachelenen data sonucunu getirir!!!
-const getData = cache(async (category: string, locale: string) => {
+export const getData = cache(async (category: string, locale: string) => {
   try {
     const res = await directus.items("category").readByQuery({
       filter: {
@@ -27,11 +27,11 @@ const getData = cache(async (category: string, locale: string) => {
       ],
     });
 
-    if (locale === "en") {
-      return res?.data?.[0];
-    }
-
     const fetchedCategory: any = res?.data?.[0];
+
+    if (locale === "en") {
+      return fetchedCategory;
+    }
 
     const localisedRes = {
       ...fetchedCategory,
@@ -85,13 +85,13 @@ export const generateMetadata = async ({
       description: data?.description,
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${category}`,
       siteName: siteConfig.siteName,
-      images: [
-        {
-          url: "https://localhost:3000/opengraph-image.png",
-          width: 1200,
-          height: 628,
-        },
-      ],
+      // images: [
+      //   {
+      //     url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${category}/opengraph-image.png`,
+      //     width: 1200,
+      //     height: 628,
+      //   },
+      // ],
       locale: lang,
       type: "website",
     },
