@@ -6,7 +6,7 @@ import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
 
-const getData = async (slug: string) => {
+const getData = async (slug: string, locale: string) => {
   try {
     const res = await directus.items("post").readByQuery({
       filter: {
@@ -21,10 +21,29 @@ const getData = async (slug: string) => {
         "author.id",
         "author.first_name",
         "author.last_name",
+        "translations.*",
+        "category.translations.*",
       ],
     });
 
-    return res?.data?.[0];
+    const postData = res?.data?.[0];
+
+    if (locale === "en") {
+      return postData;
+    }
+
+    const localisedRes = {
+      ...postData,
+      title: postData?.translations?.[0]?.title,
+      description: postData?.translations?.[0]?.description,
+      body: postData?.translations?.[0]?.body,
+      category: {
+        ...postData?.category,
+        title: postData?.category?.translations?.[0]?.title,
+      },
+    };
+
+    return localisedRes;
   } catch (error) {
     console.log("error", error);
     throw new Error("Error fetching post!");
@@ -32,7 +51,7 @@ const getData = async (slug: string) => {
 };
 
 const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
-  const post = await getData(params.slug);
+  const post = await getData(params.slug, params.lang);
 
   if (!post) {
     notFound();
@@ -55,8 +74,6 @@ const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
       link: `https://www.linkedin.com/shareArticle?mini=true&url=${process.env.NEXT_PUBLIC_SITE_URL}/post/${post.slug}}`,
     },
   ];
-
-  console.log("params.lang", params.lang);
 
   return (
     <PaddingContainer>
@@ -97,13 +114,21 @@ export const generateStaticParams = async () => {
       fields: ["slug"],
     });
 
-    const params = res?.data?.map((item) => {
-      return {
-        slug: item.slug as string,
-      };
-    });
+    const mapCategoryParams = (lang: string) => {
+      return res?.data?.map((item) => {
+        return {
+          slug: item.slug as string,
+          lang,
+        };
+      });
+    };
 
-    return params || [];
+    const params = mapCategoryParams("en");
+    const localisedParams = mapCategoryParams("de");
+
+    const allParams = params?.concat(localisedParams ?? []);
+
+    return allParams || [];
   } catch (error) {
     throw new Error("Error fetching post!");
   }
