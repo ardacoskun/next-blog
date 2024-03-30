@@ -6,6 +6,7 @@ import SocialLink from "@/components/Elements/SocialLink";
 import PostBody from "@/components/Post/PostBody";
 import CTACard from "@/components/Elements/CTACard";
 import directus from "@/lib/directus";
+import siteConfig from "@/config/site";
 
 const getData = cache(async (slug: string, locale: string) => {
   try {
@@ -63,6 +64,21 @@ export const generateMetadata = async ({
       absolute: data?.title,
     },
     description: data?.description,
+    openGraph: {
+      title: data?.title,
+      description: data?.description,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${slug}`,
+      siteName: siteConfig.siteName,
+      images: [
+        {
+          url: "https://localhost:3000/opengraph-image.png",
+          width: 1200,
+          height: 628,
+        },
+      ],
+      locale: lang,
+      type: "website",
+    },
   };
 };
 

@@ -4,6 +4,7 @@ import PaddingContainer from "@/components/Layout/PaddingContainer";
 import PostList from "@/components/Post/PostList";
 import directus from "@/lib/directus";
 import { POST } from "@/types/collection";
+import siteConfig from "@/config/site";
 
 // category: string, locale: string değişmezse cachelenen data sonucunu getirir!!!
 const getData = cache(async (category: string, locale: string) => {
@@ -79,6 +80,21 @@ export const generateMetadata = async ({
   return {
     title: data?.title,
     description: data?.description,
+    openGraph: {
+      title: data?.title,
+      description: data?.description,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${category}`,
+      siteName: siteConfig.siteName,
+      images: [
+        {
+          url: "https://localhost:3000/opengraph-image.png",
+          width: 1200,
+          height: 628,
+        },
+      ],
+      locale: lang,
+      type: "website",
+    },
   };
 };
 
