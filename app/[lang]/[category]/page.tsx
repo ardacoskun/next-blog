@@ -1,11 +1,12 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
-import { DUMMY_CATEGORIES } from "@/DUMMY_DATA";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import PostList from "@/components/Post/PostList";
 import directus from "@/lib/directus";
 import { POST } from "@/types/collection";
 
-const getData = async (category: string, locale: string) => {
+// category: string, locale: string değişmezse cachelenen data sonucunu getirir!!!
+const getData = cache(async (category: string, locale: string) => {
   try {
     const res = await directus.items("category").readByQuery({
       filter: {
@@ -54,6 +55,22 @@ const getData = async (category: string, locale: string) => {
     console.log("error", error);
     throw new Error("Error fetching category!");
   }
+});
+
+export const generateMetadata = async ({
+  params: { category, lang },
+}: {
+  params: {
+    category: string;
+    lang: string;
+  };
+}) => {
+  const data = await getData(category, lang);
+
+  return {
+    title: `Explorer | ${data?.title}`,
+    description: data?.description,
+  };
 };
 
 const Page = async ({
