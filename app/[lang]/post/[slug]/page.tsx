@@ -92,6 +92,23 @@ export const generateMetadata = async ({
 const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const post = await getData(params.slug, params.lang);
 
+  //Structured Data for Google
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    image: `${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`,
+    author: `${post.author.first_name} ${post.author.last_name}`,
+    genre: post.category.title,
+    publisher: siteConfig.siteName,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/post/${params.slug}`,
+    datePublished: new Date(post.date_created).toISOString(),
+    dateCreated: new Date(post.date_created).toISOString(),
+    dateModified: new Date(post.date_updated).toISOString(),
+    description: post.description,
+    articleBody: post.body,
+  };
+
   if (!post) {
     notFound();
   }
@@ -116,6 +133,11 @@ const Page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
   return (
     <PaddingContainer>
+      {/* Add JSON-LD to your page */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="space-y-10">
         <PostHero post={post} locale={params.lang} />
         <div className="flex flex-col gap-10 md:flex-row">
