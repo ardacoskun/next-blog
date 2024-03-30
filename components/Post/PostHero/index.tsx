@@ -12,6 +12,7 @@ const PostHero = ({ post, locale }: PostHeroProps) => {
     <div>
       <PostContent post={post} locale={locale} isPostPage />
       <Image
+        priority
         src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`}
         width={1280}
         height={500}

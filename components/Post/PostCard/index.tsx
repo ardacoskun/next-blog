@@ -26,6 +26,7 @@ const PostCard = ({
       } `}
     >
       <Image
+        priority
         src={`${process.env.NEXT_PUBLIC_ASSETS_URL}/${post.image}`}
         alt={post.title}
         width={600}
