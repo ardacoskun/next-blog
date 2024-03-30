@@ -3,13 +3,22 @@ import { Inter } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import siteConfig from "@/config/site";
+import { getDictionary } from "@/lib/getDictionary";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: siteConfig.siteName,
-  description: siteConfig.description,
+export const generateMetadata = async ({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) => {
+  const dictionary = await getDictionary(lang);
+
+  return {
+    title: siteConfig.siteName,
+    description: dictionary.footer.description,
+  };
 };
 
 export default function RootLayout({
