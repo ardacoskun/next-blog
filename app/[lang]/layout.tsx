@@ -16,7 +16,10 @@ export const generateMetadata = async ({
   const dictionary = await getDictionary(lang);
 
   return {
-    title: siteConfig.siteName,
+    title: {
+      template: `${siteConfig.siteName} | %s `,
+      default: siteConfig.siteName,
+    },
     description: dictionary.footer.description,
   };
 };

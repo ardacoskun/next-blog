@@ -67,8 +67,17 @@ export const generateMetadata = async ({
 }) => {
   const data = await getData(category, lang);
 
+  // Eğer global templateten gelen metadata title verisini kullanmak istemiyorsak aşağıdaki gibi kullanmak gerekir.
+  // return {
+  //   title: {
+  //     absolute:data?.title,
+
+  //   },
+  //   description: data?.description,
+  // };
+
   return {
-    title: `Explorer | ${data?.title}`,
+    title: data?.title,
     description: data?.description,
   };
 };
