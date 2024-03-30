@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PaddingContainer from "@/components/Layout/PaddingContainer";
 import { getDictionary } from "@/lib/getDictionary";
+import LangSwitcher from "./LangSwitcher";
 
 const Navigation = async ({ locale }: { locale: string }) => {
   const dictionary = await getDictionary(locale);
@@ -14,6 +15,9 @@ const Navigation = async ({ locale }: { locale: string }) => {
           </Link>
           <nav>
             <ul className="flex items-center gap-4 text-neutral-600 ">
+              <li>
+                <LangSwitcher locale={locale} />
+              </li>
               <li>
                 <Link href={`/${locale}/cities`}>
                   {dictionary.navigation.links.cities}
